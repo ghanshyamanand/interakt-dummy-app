@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>InteraktApp</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p>
+
+<% if user_signed_in? %>
+  <li>
+  <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
+  </li>
+<% else %>
+  <li>
+  <%= link_to('Login', new_user_session_path)  %>
+  </li>
+<% end %>
+
+<%= yield %>
+</body>
+
+
+<script type="text/javascript">
+ (function() {
+ var interakt = document.createElement('script');
+ interakt.type = 'text/javascript'; interakt.async = true;
+ interakt.src = "//cdn.interakt.co/interakt/09aef6aaca6ee3c7e9bb10912751a318.js";
+ var scrpt = document.getElementsByTagName('script')[0];
+ scrpt.parentNode.insertBefore(interakt, scrpt);
+ })()
+</script>
+
+
+  <% if current_user %>
+  <script>
+    window.mySettings = {
+    email: '<%= current_user.email %>',
+    created_at: <%= current_user.created_at.to_i %>,
+    naman: "good_boy",
+    age:   '<%= current_user.id %>',
+    age_number: <%= current_user.id %>,
+    yoyo:  "honey singh",
+    married_at: "1470812615",
+    married: "1470812615",
+    married: "1470812615",
+    app_id: '09aef6aaca6ee3c7e9bb10912751a318',
+    purchases: [
+      <% current_user.purchases.each_with_index do |project,i|  %>
+        {
+          unique_id: '<%= project.id %>',
+          purchase_name: '<%= project.name %>',
+          purchase_age: '<%= project.age %>',
+          purchase_has_data: '<%= project.has_data %>',
+          purchase_married_at: "1470812615",
+          purchase_gender: '<%= project.gender %>'
+        } <%= "," if i < current_user.purchases.count - 1 %>
+      <% end %>    
+    ]
+  };
+  </script>
+<% end %>
+</html>
